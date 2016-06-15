@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <title>HelloApp</title>
+        <link rel="stylesheet" href="bootstrap.min.css">
+        <script src="angular.min.js"></script>
+        <script src="app.js"></script>
+        <script src="angular-ui-router.js"></script>
+        <script src="https://use.fontawesome.com/cef20f8384.js"></script>
+    </head>
+    <body ng-app="flapperNews" ng-controller="MainCtrl">
+        <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="page-header">
+                <center><h1>Reddit clone</h1></center>
+            </div>
+        <div ng-repeat="post in posts | orderBy: '-upvotes'"><br>
+        <a ng-show="post.link" href="{{post.link}}">{{post.title}}</a>
+        <span ng-hide="post.link">{{post.title}}</span> - upvotes:{{post.upvotes}}
+        <br><span ng-click="incrementUpvotes(post)">up<!--<i class="fa fa-thumbs-up" aria-hidden="true"></i>--></span>
+        <span ng-click="incrementDownvotes(post)">down<!--<i class="fa fa-thumbs-down" aria-hidden="true"></i>--></span>
+        <ui-view></ui-view>
+        </div><hr>
+        <center>
+        <form ng-submit="addPost()" style="margin-top:30px;">
+            <h2>Add a new post</h2>
+            <div class="form-group">
+            <input type="text" class="form-control" placeholder="Title" ng-model="title"></input></div>
+             <div class="form-group">
+            <input type="text" class="form-control" placeholder="Link" ng-model="link"></input></div>
+            <button type="submit" class="btn  btn-danger">Post</button>
+        </form></center>
+        </div></div>
+        <script type="text/ng-template" id="/home.html">
+             
+                <span><a class="btn btn-sm btn-default" href="#/posts/{{$index}}">Comments</a></span>
+            
+        </script>
+        
+        <script type="text/ng-template" id="/posts.html">
+            
+            <div>              
+                <span><a  class="btn btn-sm btn-default" href="#/{{$index}}">back</a></span>
+            </div>
+            <div ng-repeat="comment in post.comments | orderBy:'-upvotes'">
+                <span ng-click="incrementUpvotes(comment)">up<!--<i class="fa fa-thumbs-up" aria-hidden="true"></i>--></span>
+                    {{comment.upvotes}} - by {{comment.author}}
+                <span style="font-size:20px; margin-left:10px;">{{comment.body}}</span>
+            </div>
+            <form ng-submit="addComment()" style="margin-top:30px;">
+                <h6>Add a new comment</h6>
+                <div class="form-group">
+                 <input type="text"  placeholder="Comment" ng-model="body">
+                </div>
+                <button type="submit" class="btn btn-sm btn-primary">Post</button>
+            </form>
+        </script>
+    </body>
